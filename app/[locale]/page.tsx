@@ -1,5 +1,4 @@
 import CourseHeader from "@/components/CourseHeader";
-import IELTSCourseComponent from "@/components/CourseHeader";
 
 async function getCourseData(locale: string) {
   if (locale !== "en" && locale !== "bn") return null;
@@ -25,8 +24,8 @@ export default async function HomePage({
   params: { locale: string };
 }) {
   const courseData = await getCourseData(locale);
-  const { title, description, media } = courseData || {};
-  console.log(title);
+  const { title, description, media, checklist, cta_text } = courseData || {};
+  console.log(cta_text);
 
   // This check now correctly handles API failures or empty data
   if (!courseData) {
@@ -47,7 +46,13 @@ export default async function HomePage({
 
   return (
     <div>
-      <CourseHeader title={title} description={description} media={media} />
+      <CourseHeader
+        title={title}
+        description={description}
+        media={media}
+        checklist={checklist}
+        cta_text={cta_text}
+      />
     </div>
   );
 }

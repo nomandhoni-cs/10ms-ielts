@@ -28,9 +28,9 @@ const HeroBanner: React.FC = () => {
 
   return (
     // The z-index and relative positioning are applied here
-    <div className="relative z-[2] overflow-hidden">
+    <div className="relative z-[2]">
       {/* The inline style for the background color is preserved */}
-      <div style={{ background: "#02090B" }}>
+      <div className="bg-[#02090B]">
         <div className="relative">
           {/* The banner link with flexbox and positioning classes */}
           <a
@@ -63,7 +63,7 @@ const HeroBanner: React.FC = () => {
           <button
             onClick={handleClose}
             aria-label="Close banner"
-            className="absolute z-10 w-2 h-2 cursor-pointer right-2 top-1 md:top-2 md:h-3 md:w-3"
+            className="absolute z-10 w-2 h-2 cursor-pointer right-4 top-1"
           >
             <XIcon className="text-white" />
           </button>

@@ -1,7 +1,9 @@
+import CheckList from "./CheckList";
 import CourseThubmnail from "./CourseThubmnail";
+import CTA from "./CTA";
 
 const CourseHeader = (props) => {
-  const { title, description, media } = props;
+  const { title, description, media, checklist, cta_text } = props;
   return (
     <div
       style={{
@@ -41,29 +43,9 @@ const CourseHeader = (props) => {
           <CourseThubmnail media={media} />
           <div className="md:sticky md:top-[112px]">
             <div className="md:border p-4">
-              <div className="flex flex-col">
-                <div className="text-2xl font-semibold">৳3850</div>
-                <div className="flex items-center gap-2">
-                  <del className="text-base font-normal md:text-xl">৳5000</del>
-                  <span className="text-green-600">1150 ৳ ছাড়</span>
-                </div>
-                <button className="mt-4 bg-green-600 text-white py-2 rounded text-center">
-                  কোর্সটি কিনুন
-                </button>
-              </div>
+              <CTA cta_text={cta_text} />
               <div className="mt-4">
-                <p className="text-xl font-semibold mb-4">এই কোর্সে যা থাকছে</p>
-                <ul className="text-sm text-gray-800 space-y-2">
-                  <li>• কোর্সটি করছেন ৩৩০১৮ জন</li>
-                  <li>• সময় লাগবে ৫০ ঘন্টা</li>
-                  <li>• ৫৪টি ভিডিও</li>
-                  <li>• ১০টি রিডিং এবং ১০টি লিসেনিং মক টেস্ট</li>
-                  <li>• ৩৮টি লেকচার শিট</li>
-                  <li>• ২৫টি ভিডিও লেকচার</li>
-                  <li>• ১টি ফ্রি হার্ডকপি বই</li>
-                  <li>• ফেসবুক সাপোর্ট গ্রুপ</li>
-                  <li>• কোর্সের মেয়াদ আজীবন</li>
-                </ul>
+                <CheckList checklist={checklist} />
               </div>
               <p className="mt-6 text-sm text-gray-500 text-center">
                 কোর্সটি সম্পর্কে বিস্তারিত জানতে

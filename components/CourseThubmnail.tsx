@@ -64,7 +64,7 @@ const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-1">
+    <div className="w-full max-w-md mx-auto rounded-lg overflow-hidden p-1">
       {/* Main Media Viewer */}
       <div className="relative aspect-video group">
         <img
