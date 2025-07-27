@@ -6,8 +6,10 @@ import CourseHeader from "@/components/CourseHeader";
 import CourseInstructor from "@/components/CourseInstructor";
 import DownloadPdf from "@/components/DownloadPdf";
 import ExclusiveFeatures from "@/components/ExclusiveFeatures";
+import Faq from "@/components/Faq";
 import KeyPoints from "@/components/KeyPoints";
 import StickyEnroll from "@/components/StickyEnroll";
+import Testimonials from "@/components/Testimonials";
 
 // The getCourseData function is well-written and can remain the same.
 async function getCourseData(locale: string) {
@@ -74,6 +76,8 @@ export default async function HomePage({ params }: HomePageProps) {
           <KeyPoints sections={sections} />
           <AboutCourse sections={sections} />
           <ExclusiveFeatures sections={sections} />
+          <Testimonials sections={sections} />
+          <Faq sections={sections} />
         </div>
         <div className="block md:hidden">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />

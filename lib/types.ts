@@ -131,6 +131,45 @@ export interface FeatureExplanationsSection {
   values: FeatureExplanationsValue[];
 }
 
+// Define the expected structure for a single testimonial item
+export interface TestimonialsValue {
+  description: string;
+  id: string;
+  name: string;
+  profile_image: string;
+  testimonial: string;
+  thumb: string; // Thumbnail for video
+  video_type: string;
+  video_url: string; // YouTube video ID or full URL
+}
+
+// Define the expected structure for the testimonials section object
+export interface TestimonialsSection {
+  type: "testimonials";
+  name: string;
+  description: string;
+  bg_color: string;
+  order_idx: number;
+  values: TestimonialsValue[];
+}
+
+// Define the expected structure for a single FAQ item
+export interface FaqValue {
+  answer: string; // Contains HTML
+  id: string;
+  question: string;
+}
+
+// Define the expected structure for the FAQ section object
+export interface FaqSection {
+  type: "faq";
+  name: string;
+  description: string;
+  bg_color: string;
+  order_idx: number;
+  values: FaqValue[];
+}
+
 // Define a union type for all possible section types
 export type Section =
   | PointersSection
@@ -138,7 +177,9 @@ export type Section =
   | FeatureSection
   | GroupJoinEngagementSection
   | AboutSection
-  | FeatureExplanationsSection; // Added FeatureExplanationsSection to the union type
+  | FeatureExplanationsSection
+  | TestimonialsSection
+  | FaqSection; // Added FaqSection to the union type
 
 // Define the main CourseData interface
 export interface CourseData {
