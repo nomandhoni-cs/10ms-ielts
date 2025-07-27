@@ -1,5 +1,6 @@
 // app/[locale]/page.tsx
 
+import AboutCourse from "@/components/AboutCourse";
 import CourseFeatures from "@/components/CourseFeatures";
 import CourseHeader from "@/components/CourseHeader";
 import CourseInstructor from "@/components/CourseInstructor";
@@ -70,6 +71,7 @@ export default async function HomePage({ params }: HomePageProps) {
           <CourseFeatures sections={sections} />
           <DownloadPdf sections={sections} />
           <KeyPoints sections={sections} />
+          <AboutCourse sections={sections} />
         </div>
         <div className="block md:hidden">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />
