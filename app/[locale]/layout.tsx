@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import HeroBanner from "@/components/HeroBanner";
 
-// --- Font Configuration (no changes needed) ---
+// --- Font Configuration ---
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -19,72 +19,69 @@ const notoSansBengali = Noto_Sans_Bengali({
   variable: "--font-noto-sans-bengali",
 });
 
-// --- Data Fetching Function (using 'locale' now) ---
+// --- Data Fetching Function ---
 async function getCourseData(locale: string) {
-  // Only fetch if locale is 'en' or 'bn' to avoid unnecessary API calls
-  if (locale !== "en" && locale !== "bn") {
-    return null;
-  }
   try {
     const res = await fetch(
       `https://api.10minuteschool.com/discovery-service/api/v1/products/ielts-course?lang=${locale}`,
-      { next: { revalidate: 3600 } }
+      {
+        next: { revalidate: 3600 },
+      }
     );
 
     if (!res.ok) {
-      console.error("API response not OK:", res.status);
-      return null;
+      throw new Error("Failed to fetch data");
     }
 
     const json = await res.json();
-    // Check if the API returned a soft error (e.g., empty data object)
-    if (!json.data || !json.data.slug) {
-      console.error("API returned success status but data is invalid.");
-      return null;
-    }
-
     return json.data;
   } catch (error) {
-    console.error("Failed to fetch course data:", error);
+    console.error(error);
     return null;
   }
 }
 
-// --- Dynamic Metadata Function (using 'locale') ---
+// --- Dynamic Metadata Function ---
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const courseData = await getCourseData(params.locale);
+  // Await params first
+  const { locale } = await params;
+  const courseData = await getCourseData(locale);
 
   return {
     title: courseData?.title || "10 Minute School",
-    description: courseData?.description
-      ? "A learning platform."
-      : "Course description not available.",
+    description: "A learning platform.",
   };
 }
 
-// --- Root Layout Component (using 'locale') ---
+interface RootLayoutProps {
+  children: React.ReactNode;
+  params: {
+    locale: string;
+  };
+}
+
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
-}>) {
-  // Destructure locale from params
-  const { locale } = params;
+}: RootLayoutProps) {
+  // FIX: Destructure locale here, not in the signature
+  const { locale } = await params;
+
+  // You are fetching data in the layout, which is fine.
   const courseData = await getCourseData(locale);
 
   return (
+    // FIX: Use the `locale` variable
     <html lang={locale}>
       <body
         className={`${inter.variable} ${notoSansBengali.variable} font-sans antialiased`}
       >
         <main className="relative">
-          {/* Pass 'locale' and the fetched data to the Navbar */}
+          {/* FIX: Use the `locale` variable */}
           <Navbar lang={locale} t={courseData} />
           <HeroBanner />
           {children}

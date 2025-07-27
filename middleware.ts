@@ -1,30 +1,39 @@
+// middleware.ts
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const defaultLocale = "bn";
 const locales = ["en", "bn"];
+const defaultLocale = "bn";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the path is missing a locale
-  const pathnameIsMissingLocale = locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+  // Step 1: Check if the path is for a resource file. If so, do nothing.
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/images") ||
+    pathname.includes(".") // Assumes resource files have an extension
+  ) {
+    return;
+  }
+
+  // Step 2: Check if the path already has a locale. If so, do nothing.
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
-    // e.g. incoming request is /products
-    // The new URL is now /bn/products
-    return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}`, request.url)
-    );
+  if (pathnameHasLocale) {
+    return;
   }
+
+  // Step 3: Redirect to the default locale.
+  request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
-  matcher: [
-    // Skip all internal paths (_next)
-    "/((?!_next|api|images|favicon.ico).*)",
-  ],
+  // Run middleware on every request
+  matcher: "/:path*",
 };

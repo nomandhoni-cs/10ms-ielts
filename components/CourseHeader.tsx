@@ -47,9 +47,11 @@ const CourseHeader = (props) => {
               <div className="mt-4">
                 <CheckList checklist={checklist} />
               </div>
-              <p className="mt-6 text-sm text-gray-500 text-center">
-                কোর্সটি সম্পর্কে বিস্তারিত জানতে
-                <span className="flex items-center justify-center text-green-600 underline cursor-pointer mt-1">
+              <div className="flex justify-between items-center text-sm">
+                <p className=" text-gray-500 text-center">
+                  কোর্সটি সম্পর্কে বিস্তারিত জানতে
+                </p>
+                <span className="flex items-center justify-center text-green-600 underline cursor-pointer">
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
@@ -63,7 +65,7 @@ const CourseHeader = (props) => {
                   </svg>
                   <span className="ml-1">ফোন করুন (16910)</span>
                 </span>
-              </p>
+              </div>
             </div>
           </div>
         </section>

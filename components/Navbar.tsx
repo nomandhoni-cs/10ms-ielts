@@ -52,8 +52,8 @@ const MobileNavLink: React.FC<NavLinkProps> = ({
 
 // --- Navbar Props ---
 interface NavbarProps {
-  lang: "en" | "bn";
-  t: any; // The fetched course data
+  lang: string; // Language code, e.g., "en" or "bn";
+  t: string; // The fetched course data
 }
 
 // --- Hardcoded translations for UI elements not in the API ---

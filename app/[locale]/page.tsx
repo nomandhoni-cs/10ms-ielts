@@ -1,5 +1,8 @@
+// app/[locale]/page.tsx
+
 import CourseHeader from "@/components/CourseHeader";
 
+// The getCourseData function is well-written and can remain the same.
 async function getCourseData(locale: string) {
   if (locale !== "en" && locale !== "bn") return null;
   try {
@@ -9,25 +12,31 @@ async function getCourseData(locale: string) {
     );
     if (!res.ok) return null;
     const json = await res.json();
-    // Also check for the empty data object from the API
     if (!json.data || !json.data.slug) return null;
     return json.data;
   } catch (error) {
-    console.error(error);
+    console.error("Failed to fetch course data:", error);
     return null;
   }
 }
 
-export default async function HomePage({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  const courseData = await getCourseData(locale);
-  const { title, description, media, checklist, cta_text } = courseData || {};
-  console.log(cta_text);
+// Define the props type for clarity
+interface HomePageProps {
+  params: {
+    locale: string;
+  };
+}
 
-  // This check now correctly handles API failures or empty data
+// FIX 1: Correctly handle the `params` prop.
+// Do not destructure `locale` directly in the function signature.
+export default async function HomePage({ params }: HomePageProps) {
+  // FIX 2: Destructure `locale` inside the function body.
+  const { locale } = await params;
+
+  const courseData = await getCourseData(locale);
+
+  // This is the correct way to handle a potential null return.
+  // Check for null *before* trying to use the data.
   if (!courseData) {
     return (
       <div className="container mx-auto p-8 text-center">
@@ -37,8 +46,12 @@ export default async function HomePage({
     );
   }
 
-  // FIX: Use optional chaining (?.) to prevent crash if media is null
-  const thumbnail = courseData.media?.find(
+  // Now that we know courseData is not null, we can safely destructure it.
+  const { title, description, media, checklist, cta_text } = courseData;
+
+  // The rest of your logic can remain the same.
+  // The optional chaining you added is good practice.
+  const thumbnail = media?.find(
     (m: any) => m.name === "thumbnail"
   )?.resource_value;
 
