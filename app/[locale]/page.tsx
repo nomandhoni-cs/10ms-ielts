@@ -1,5 +1,6 @@
 // app/[locale]/page.tsx
 
+import CourseFeatures from "@/components/CourseFeatures";
 import CourseHeader from "@/components/CourseHeader";
 import CourseInstructor from "@/components/CourseInstructor";
 import StickyEnroll from "@/components/StickyEnroll";
@@ -64,6 +65,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <section className="max-w-6xl mx-auto py-4 md:flex items-center justify-between">
         <div className="w-full md:max-w-[calc(100%_-_348px)] lg:max-w-[calc(100%_-_448px)]">
           <CourseInstructor sections={sections} />
+          <CourseFeatures sections={sections} />
         </div>
         <div className="block md:hidden">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />
