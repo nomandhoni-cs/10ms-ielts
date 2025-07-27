@@ -5,6 +5,7 @@ import CourseFeatures from "@/components/CourseFeatures";
 import CourseHeader from "@/components/CourseHeader";
 import CourseInstructor from "@/components/CourseInstructor";
 import DownloadPdf from "@/components/DownloadPdf";
+import ExclusiveFeatures from "@/components/ExclusiveFeatures";
 import KeyPoints from "@/components/KeyPoints";
 import StickyEnroll from "@/components/StickyEnroll";
 
@@ -72,6 +73,7 @@ export default async function HomePage({ params }: HomePageProps) {
           <DownloadPdf sections={sections} />
           <KeyPoints sections={sections} />
           <AboutCourse sections={sections} />
+          <ExclusiveFeatures sections={sections} />
         </div>
         <div className="block md:hidden">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />

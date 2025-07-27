@@ -111,13 +111,34 @@ export interface AboutSection {
   values: AboutValue[];
 }
 
+// Define the expected structure for a single feature explanation item
+export interface FeatureExplanationsValue {
+  checklist: string[];
+  file_type: string;
+  file_url: string;
+  id: string;
+  title: string;
+  video_thumbnail: string;
+}
+
+// Define the expected structure for the feature_explanations section object
+export interface FeatureExplanationsSection {
+  type: "feature_explanations";
+  name: string;
+  description: string;
+  bg_color: string;
+  order_idx: number;
+  values: FeatureExplanationsValue[];
+}
+
 // Define a union type for all possible section types
 export type Section =
   | PointersSection
   | InstructorSection
   | FeatureSection
   | GroupJoinEngagementSection
-  | AboutSection;
+  | AboutSection
+  | FeatureExplanationsSection; // Added FeatureExplanationsSection to the union type
 
 // Define the main CourseData interface
 export interface CourseData {
