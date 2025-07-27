@@ -1,7 +1,10 @@
 "use client";
-import React, { useState, ReactNode } from "react";
 
-// It's a good practice to have your SVG icons as separate components
+import React, { useState, ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+// --- Icon Components (no changes needed) ---
 const MenuIcon = () => (
   <svg
     stroke="currentColor"
@@ -15,7 +18,6 @@ const MenuIcon = () => (
     <path d="M21 17.9995V19.9995H3V17.9995H21ZM17.4038 3.90332L22 8.49951L17.4038 13.0957L15.9896 11.6815L19.1716 8.49951L15.9896 5.31753L17.4038 3.90332ZM12 10.9995V12.9995H3V10.9995H12ZM12 3.99951V5.99951H3V3.99951H12Z"></path>
   </svg>
 );
-
 const SearchIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +37,6 @@ const SearchIcon = () => (
     ></path>
   </svg>
 );
-
 const ChevronDownIcon = () => (
   <svg
     stroke="currentColor"
@@ -52,7 +53,6 @@ const ChevronDownIcon = () => (
     <polyline points="6 9 12 15 18 9"></polyline>
   </svg>
 );
-
 const LanguageIcon = () => (
   <svg
     className="hidden md:block"
@@ -84,7 +84,6 @@ const LanguageIcon = () => (
     </defs>
   </svg>
 );
-
 const PhoneIcon = () => (
   <svg
     stroke="currentColor"
@@ -101,7 +100,6 @@ const PhoneIcon = () => (
     ></path>
   </svg>
 );
-
 const MobilePhoneIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -121,36 +119,33 @@ const MobilePhoneIcon = () => (
   </svg>
 );
 
-// Define the type for the props
 interface NavLinkProps {
   href: string;
   children: ReactNode;
-  hasDropdown?: boolean; // Optional prop
+  hasDropdown?: boolean;
 }
-
 const NavLink: React.FC<NavLinkProps> = ({
   href,
   children,
   hasDropdown = false,
 }) => (
   <li className="relative">
-    <a
+    <Link
       className="flex cursor-pointer items-center justify-center gap-0.5 text-sm font-medium text-[#4B5563] hover:text-green"
       href={href}
     >
       <p className="relative mb-0">{children}</p>
       {hasDropdown && <ChevronDownIcon />}
-    </a>
+    </Link>
   </li>
 );
-
 const MobileNavLink: React.FC<NavLinkProps> = ({
   href,
   children,
   hasDropdown = false,
 }) => (
   <li className="relative list-none">
-    <a
+    <Link
       className="flex cursor-pointer items-center gap-2 hover:text-green text-[#4B5563] text-xs font-medium mt-0.5"
       href={href}
     >
@@ -158,28 +153,72 @@ const MobileNavLink: React.FC<NavLinkProps> = ({
         <p className="relative mb-0">{children}</p>
         {hasDropdown && <ChevronDownIcon />}
       </div>
-    </a>
+    </Link>
   </li>
 );
 
-const Navbar = () => {
+// --- Navbar Props ---
+interface NavbarProps {
+  lang: "en" | "bn";
+  t: any; // The fetched course data
+}
+
+// --- Hardcoded translations for UI elements not in the API ---
+const translations = {
+  en: {
+    nav: [
+      { href: "/academic/", label: "Class 6-12", hasDropdown: true },
+      { href: "/skills/", label: "Skills", hasDropdown: true },
+      { href: "/admission/", label: "Admission Test" },
+      { href: "/online-batch/", label: "Online Batch", hasDropdown: true },
+      { href: "/english-centre/", label: "English Center", hasDropdown: true },
+      { href: "#", label: "More", hasDropdown: true },
+    ],
+    mobileNav: [
+      { href: "#", label: "Class 6-12", hasDropdown: true },
+      { href: "#", label: "Skills", hasDropdown: true },
+      { href: "/admission", label: "Admission Test" },
+      { href: "#", label: "More", hasDropdown: true },
+    ],
+    searchPlaceholder: "Search for skills, courses, or programs...",
+    login: "Login",
+  },
+  bn: {
+    nav: [
+      { href: "/academic/", label: "ক্লাস ৬-১২", hasDropdown: true },
+      { href: "/skills/", label: "স্কিলস", hasDropdown: true },
+      { href: "/admission/", label: "ভর্তি পরীক্ষা" },
+      { href: "/online-batch/", label: "অনলাইন ব্যাচ", hasDropdown: true },
+      { href: "/english-centre/", label: "ইংলিশ সেন্টার", hasDropdown: true },
+      { href: "#", label: "আরো", hasDropdown: true },
+    ],
+    mobileNav: [
+      { href: "#", label: "ক্লাস ৬-১২", hasDropdown: true },
+      { href: "#", label: "স্কিলস", hasDropdown: true },
+      { href: "/admission", label: "ভর্তি পরীক্ষা" },
+      { href: "#", label: "আরো", hasDropdown: true },
+    ],
+    searchPlaceholder: "স্কিলস কোর্স, কিংবা স্কুল প্রোগ্রাম সার্চ করুন...",
+    login: "লগ-ইন",
+  },
+};
+
+const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const navItems = [
-    { href: "/academic/", label: "ক্লাস ৬-১২", hasDropdown: true },
-    { href: "/skills/", label: "স্কিলস", hasDropdown: true },
-    { href: "/admission/", label: "ভর্তি পরীক্ষা" },
-    { href: "/online-batch/", label: "অনলাইন ব্যাচ", hasDropdown: true },
-    { href: "/english-centre/", label: "ইংলিশ সেন্টার", hasDropdown: true },
-    { href: "#", label: "আরো", hasDropdown: true },
-  ];
+  const navItems = translations[lang].nav;
+  const mobileNavItems = translations[lang].mobileNav;
 
-  const mobileNavItems = [
-    { href: "#", label: "ক্লাস ৬-১২", hasDropdown: true },
-    { href: "#", label: "স্কিলস", hasDropdown: true },
-    { href: "/admission", label: "ভর্তি পরীক্ষা" },
-    { href: "#", label: "আরো", hasDropdown: true },
-  ];
+  // Function to generate the URL for the other language
+  const getLanguageToggleUrl = () => {
+    const newLang = lang === "en" ? "bn" : "en";
+    if (pathname) {
+      // Replaces the lang part of the URL, e.g., /en/some-page -> /bn/some-page
+      return pathname.replace(`/${lang}`, `/${newLang}`);
+    }
+    return `/${newLang}`; // Fallback
+  };
 
   return (
     <div className="sticky top-0 z-50 border-b bg-white md:h-[65px]">
@@ -196,7 +235,7 @@ const Navbar = () => {
             <span className="sr-only">menu</span>
           </button>
           <div className="md:hidden">
-            <a className="h-[27px] w-[100px]" href="/">
+            <Link className="h-[27px] w-[100px]" href={`/${lang}`}>
               <img
                 alt="10ms"
                 src="https://cdn.10minuteschool.com/images/svg/10mslogo-svg.svg"
@@ -206,13 +245,13 @@ const Navbar = () => {
                 decoding="async"
                 style={{ color: "transparent" }}
               />
-            </a>
+            </Link>
           </div>
         </div>
 
         {/* Desktop Logo */}
         <div className="items-center hidden gap-9 md:flex">
-          <a className="h-[27px] w-[100px]" href="/">
+          <Link className="h-[27px] w-[100px]" href={`/${lang}`}>
             <img
               alt="10ms"
               src="https://cdn.10minuteschool.com/images/svg/10mslogo-svg.svg"
@@ -222,7 +261,7 @@ const Navbar = () => {
               decoding="async"
               style={{ color: "transparent" }}
             />
-          </a>
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -235,8 +274,8 @@ const Navbar = () => {
                   type="search"
                   autoComplete="off"
                   autoCorrect="off"
-                  placeholder="স্কিলস কোর্স, কিংবা স্কুল প্রোগ্রাম সার্চ করুন..."
-                  className="w-full flex-1 placeholder:text-sm placeholder:font-normal placeholder:leading-5 placeholder:text-[#7C818A] focus:outline-none"
+                  placeholder={translations[lang].searchPlaceholder}
+                  className="w-full flex-1 placeholder:text-sm placeholder:font-normal placeholder:leading-5 placeholder:text-[#7C818A] focus:outline-none bg-transparent"
                   name="Search"
                 />
               </div>
@@ -267,10 +306,16 @@ const Navbar = () => {
                 <SearchIcon />
               </button>
             </span>
-            <span className="hidden cursor-pointer items-center gap-1 rounded border px-2 py-[2px] hover:bg-slate-50 md:flex">
+
+            {/* Language Switcher */}
+            <Link
+              href={getLanguageToggleUrl()}
+              className="hidden cursor-pointer items-center gap-1 rounded border px-2 py-[2px] hover:bg-slate-50 md:flex"
+            >
               <LanguageIcon />
-              <span>EN</span>
-            </span>
+              <span>{lang === "en" ? "BN" : "EN"}</span>
+            </Link>
+
             <a
               className="items-center hidden gap-1 text-green md:flex"
               href="tel:16910"
@@ -294,7 +339,8 @@ const Navbar = () => {
                 id="login-button"
                 className="leading-[18px] whitespace-nowrap text-[12px] font-semibold md:text-[16px] md:font-medium"
               >
-                লগ-ইন
+                {/* Use API data if available, otherwise use fallback from translations object */}
+                {t?.cta_text?.name || translations[lang].login}
               </span>
             </a>
           </div>
