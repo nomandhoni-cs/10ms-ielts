@@ -1,6 +1,8 @@
 // app/[locale]/page.tsx
 
 import CourseHeader from "@/components/CourseHeader";
+import CourseInstructor from "@/components/CourseInstructor";
+import StickyEnroll from "@/components/StickyEnroll";
 
 // The getCourseData function is well-written and can remain the same.
 async function getCourseData(locale: string) {
@@ -27,16 +29,11 @@ interface HomePageProps {
   };
 }
 
-// FIX 1: Correctly handle the `params` prop.
-// Do not destructure `locale` directly in the function signature.
 export default async function HomePage({ params }: HomePageProps) {
-  // FIX 2: Destructure `locale` inside the function body.
   const { locale } = await params;
 
   const courseData = await getCourseData(locale);
 
-  // This is the correct way to handle a potential null return.
-  // Check for null *before* trying to use the data.
   if (!courseData) {
     return (
       <div className="container mx-auto p-8 text-center">
@@ -46,11 +43,9 @@ export default async function HomePage({ params }: HomePageProps) {
     );
   }
 
-  // Now that we know courseData is not null, we can safely destructure it.
-  const { title, description, media, checklist, cta_text } = courseData;
+  const { title, description, media, checklist, cta_text, sections } =
+    courseData;
 
-  // The rest of your logic can remain the same.
-  // The optional chaining you added is good practice.
   const thumbnail = media?.find(
     (m: any) => m.name === "thumbnail"
   )?.resource_value;
@@ -66,6 +61,14 @@ export default async function HomePage({ params }: HomePageProps) {
         checklist={checklist}
         cta_text={cta_text}
       />
+      <section className="max-w-6xl mx-auto py-4 md:flex items-center justify-between">
+        <div className="w-full md:max-w-[calc(100%_-_348px)] lg:max-w-[calc(100%_-_448px)]">
+          <CourseInstructor sections={sections} />
+        </div>
+        <div className="block md:hidden">
+          <StickyEnroll checklist={checklist} cta_text={cta_text} />
+        </div>
+      </section>
     </div>
   );
 }
