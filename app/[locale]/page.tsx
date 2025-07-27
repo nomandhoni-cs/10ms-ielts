@@ -3,6 +3,7 @@
 import CourseFeatures from "@/components/CourseFeatures";
 import CourseHeader from "@/components/CourseHeader";
 import CourseInstructor from "@/components/CourseInstructor";
+import DownloadPdf from "@/components/DownloadPdf";
 import StickyEnroll from "@/components/StickyEnroll";
 
 // The getCourseData function is well-written and can remain the same.
@@ -66,6 +67,7 @@ export default async function HomePage({ params }: HomePageProps) {
         <div className="w-full md:max-w-[calc(100%_-_348px)] lg:max-w-[calc(100%_-_448px)]">
           <CourseInstructor sections={sections} />
           <CourseFeatures sections={sections} />
+          <DownloadPdf sections={sections} />
         </div>
         <div className="block md:hidden">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />
