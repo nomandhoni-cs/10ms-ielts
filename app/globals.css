@@ -39,10 +39,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --default-font-family: sans: [ "var(--font-inter)",
-    "var(--font-noto-sans-bengali)",
-    ...fontFamily.sans,
-    ],
 }
 
 :root {

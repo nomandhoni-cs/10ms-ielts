@@ -1,4 +1,5 @@
-// This is a server component
+import CourseHeader from "@/components/CourseHeader";
+import IELTSCourseComponent from "@/components/CourseHeader";
 
 async function getCourseData(locale: string) {
   if (locale !== "en" && locale !== "bn") return null;
@@ -24,6 +25,8 @@ export default async function HomePage({
   params: { locale: string };
 }) {
   const courseData = await getCourseData(locale);
+  const { title, description, media } = courseData || {};
+  console.log(title);
 
   // This check now correctly handles API failures or empty data
   if (!courseData) {
@@ -44,47 +47,7 @@ export default async function HomePage({
 
   return (
     <div>
-      {/* Hero Banner using fetched data */}
-      {thumbnail && (
-        <div
-          className="relative h-96 bg-cover bg-center text-white flex items-center justify-center"
-          style={{ backgroundImage: `url(${thumbnail})` }}
-        >
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative z-10 text-center p-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              {courseData.title}
-            </h1>
-            {/* Use optional chaining here too for safety */}
-            {courseData.description && (
-              <div
-                className="text-lg md:text-xl max-w-2xl mx-auto"
-                dangerouslySetInnerHTML={{ __html: courseData.description }}
-              />
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Checklist section */}
-      {courseData.checklist && (
-        <div className="container mx-auto p-8">
-          <h2 className="text-3xl font-bold mb-6 text-center">
-            {featuresTitle}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {courseData.checklist.map((item: any) => (
-              <div
-                key={item.id}
-                className="p-4 border rounded-lg shadow-sm flex items-center gap-4"
-              >
-                <img src={item.icon} alt="" className="w-10 h-10" />
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <CourseHeader title={title} description={description} media={media} />
     </div>
   );
 }

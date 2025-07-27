@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer"; // Assuming you have a Footer component
+import Footer from "@/components/Footer";
+import HeroBanner from "@/components/HeroBanner";
 
 // --- Font Configuration (no changes needed) ---
 const inter = Inter({
@@ -85,6 +86,7 @@ export default async function RootLayout({
         <main className="relative">
           {/* Pass 'locale' and the fetched data to the Navbar */}
           <Navbar lang={locale} t={courseData} />
+          <HeroBanner />
           {children}
           <Footer />
         </main>
