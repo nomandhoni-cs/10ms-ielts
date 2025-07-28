@@ -61,7 +61,7 @@ export default async function HomePage({ params }: HomePageProps) {
         checklist={checklist}
         cta_text={cta_text}
       />
-      <section className="max-w-6xl mx-auto py-4 flex flex-col-reverse md:flex-row items-center justify-between">
+      <section className="max-w-6xl mx-auto py-4 px-3 flex flex-col-reverse md:flex-row md:items-start gap-12">
         <div className="w-full md:max-w-[calc(100%_-_348px)] lg:max-w-[calc(100%_-_448px)]">
           <CourseInstructor sections={sections} />
           <CourseFeatures sections={sections} />
@@ -72,7 +72,8 @@ export default async function HomePage({ params }: HomePageProps) {
           <Testimonials sections={sections} />
           <Faq sections={sections} />
         </div>
-        <div className="block md:hidden">
+
+        <div className="flex-shrink-0 md:w-96 md:sticky md:top-24 animate-in slide-in-from-top duration-500">
           <StickyEnroll checklist={checklist} cta_text={cta_text} />
         </div>
       </section>
