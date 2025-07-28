@@ -26,16 +26,11 @@ const CourseFeatures: React.FC<CourseFeaturesProps> = (props) => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-0">
-      {" "}
-      {/* Added padding for mobile */}
       <div id="features">
         <div className="flex flex-col gap-3">
-          {/* Section Title */}
           <h2 className="text-xl font-semibold leading-[30px] text-black">
             {featuresSection.name}
           </h2>
-
-          {/* Features Grid Container */}
           <div className="mb-16 grid grid-cols-1 gap-4 rounded-md border border-gray-700 bg-[#111827] p-6 md:grid-cols-2 md:gap-8">
             {/* Map over the values to render each feature item */}
             {featuresSection.values.map((feature) => (
@@ -64,7 +59,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ feature }) => {
             loading="lazy"
             width={36}
             height={36}
-            className="w-9 h-9 object-contain" // Tailwind classes for width, height, object-fit
+            className="w-9 h-9 object-contain"
           />
         </div>
       </div>

@@ -17,7 +17,7 @@ const CTASection: React.FC<CTAProps> = ({ cta_text }) => {
           <div className="absolute top-1/2 left-0 w-0 h-0 border-t-[14px] border-b-[14px] border-r-[14px] border-transparent border-r-orange-500 transform -translate-y-1/2 -translate-x-full"></div>
         </div>
       </div>
-      <Button className="mt-4 bg-green-600 hover:bg-green-900 text-white py-2 rounded text-lg text-center cursor-pointer">
+      <Button className="mt-4 bg-green-600 hover:bg-green-900 border-b-4 border-green-900 text-white py-4 rounded-md text-md text-center cursor-pointer">
         {cta_text.name}
       </Button>
     </div>

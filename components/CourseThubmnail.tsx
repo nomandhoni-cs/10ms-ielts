@@ -4,20 +4,14 @@ import React, { useState } from "react";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-interface MediaItem {
-  name: string;
-  resource_type: "video" | "image";
-  resource_value: string;
-  thumbnail_url?: string;
-}
+import { Media } from "@/lib/course/types";
+import Image from "next/image";
 
 interface CourseThumbnailProps {
-  media: MediaItem[];
+  media: Media[];
 }
 
 const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
-  // Filter preview gallery items for the main carousel
   const previewGallery = media.filter(
     (item) => item.name === "preview_gallery"
   );
@@ -39,7 +33,7 @@ const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
     setCurrentIndex(index);
   };
 
-  const getMediaThumbnail = (item: MediaItem) => {
+  const getMediaThumbnail = (item: Media) => {
     if (item.resource_type === "video" && item.thumbnail_url) {
       return item.thumbnail_url;
     }
@@ -67,18 +61,21 @@ const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
     <div className="w-full max-w-md mx-auto rounded-lg overflow-hidden p-1">
       {/* Main Media Viewer */}
       <div className="relative aspect-video group">
-        <img
+        <Image
           src={getCurrentMediaThumbnail()}
           alt="Course preview"
           className="w-full h-full object-cover"
+          width={640}
+          height={360}
         />
+        <div className="absolute inset-0 bg-black opacity-40"></div>
 
         {/* Play Button Overlay for Videos */}
         {currentMedia?.resource_type === "video" && (
           <div className="absolute inset-0 flex items-center justify-center">
             <Button
               size="lg"
-              className="bg-white/90 hover:bg-white text-green-500 rounded-full w-16 h-16 p-0 shadow-lg transition-all duration-200 hover:scale-110"
+              className="bg-white/90 hover:bg-white text-green-500 rounded-full w-16 h-16 p-0 shadow-lg transition-all duration-200 hover:scale-110 cursor-pointer"
             >
               <Play className="w-6 h-6 ml-1" fill="currentColor" />
             </Button>
@@ -91,19 +88,19 @@ const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 text-black rounded-full w-6 h-6 p-0  cursor-pointer"
               onClick={prevMedia}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-8 h-8" />
             </Button>
 
             <Button
               variant="ghost"
               size="sm"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-8 h-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 text-black rounded-full w-6 h-6 p-0 cursor-pointer"
               onClick={nextMedia}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-8 h-8" />
             </Button>
           </>
         )}
@@ -115,17 +112,19 @@ const CourseThumbnail = ({ media }: CourseThumbnailProps) => {
               <button
                 key={index}
                 className={cn(
-                  "flex-shrink-0 relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105",
+                  "flex-shrink-0 relative rounded-lg overflow-hidden",
                   index === currentIndex
                     ? "border-2 border-green-500"
                     : "opacity-70 hover:opacity-100"
                 )}
                 onClick={() => selectMedia(index)}
               >
-                <img
+                <Image
                   src={getMediaThumbnail(item)}
                   alt={`Preview ${index + 1}`}
                   className="h-10 object-cover"
+                  width={90}
+                  height={10}
                 />
 
                 {/* Play icon overlay for video thumbnails */}

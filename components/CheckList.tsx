@@ -1,15 +1,15 @@
-// Define the type for a single checklist item
+import Image from "next/image";
+
 interface ChecklistItem {
-  color: string; // e.g., "black"
-  icon: string; // URL to the icon image
+  color: string;
+  icon: string;
   id: string;
   list_page_visibility: boolean;
-  text: string; // The text description for the item
+  text: string;
 }
 
-// Define the props interface for the ChecklistComponent
 interface ChecklistProps {
-  checklist: ChecklistItem[]; // The checklist prop must be an array of ChecklistItem
+  checklist: ChecklistItem[];
 }
 
 const CheckList: React.FC<ChecklistProps> = ({ checklist }) => {
@@ -23,18 +23,16 @@ const CheckList: React.FC<ChecklistProps> = ({ checklist }) => {
           <div key={item.id} className="flex items-center mb-3 leading-5">
             <div
               className="inline-block h-5 w-5 transition-opacity duration-300 ease-in-out"
-              // The original HTML had opacity: 0 then 1 via inline style.
-              // We'll set it directly to 1 here as it's the final state.
               style={{ opacity: 1 }}
             >
-              <img
-                alt={item.text || "checklist icon"} // Use item text as alt for accessibility
+              <Image
+                alt={item.text || "checklist icon"}
                 src={item.icon}
                 loading="lazy"
                 width="20"
                 height="20"
                 decoding="async"
-                className="w-5 h-5 object-contain" // Ensure image fits within 20x20, maintain aspect ratio
+                className="w-5 h-5 object-contain"
               />
             </div>
             <h4 className="mb-0 inline-block pl-4 tracking-[0.005em] text-[#111827] text-base">

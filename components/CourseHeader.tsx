@@ -1,6 +1,7 @@
 import { ChecklistItem, CtaText, Media } from "@/lib/course/types";
 import CourseThubmnail from "./CourseThubmnail";
 import StickyEnroll from "./StickyEnroll";
+import Image from "next/image";
 interface CourseHeaderProps {
   title: string;
   description: string;
@@ -9,7 +10,6 @@ interface CourseHeaderProps {
   cta_text: CtaText;
 }
 
-// 3. Apply the props interface to React.FC and correct the destructuring
 const CourseHeader: React.FC<CourseHeaderProps> = ({
   title,
   description,
@@ -35,10 +35,12 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({
           <div className="mb-2">
             <button className="flex flex-row flex-wrap gap-2 text-white">
               <span className="inline-block">
-                <img
+                <Image
                   className="md:w-[130px] w-[100px]"
                   src="https://cdn.10minuteschool.com/images/Dev_Handoff_Q1_24_Frame_2_1725444418666.png"
                   alt="Rating"
+                  width={130}
+                  height={30}
                 />
               </span>
               <span className="inline-block text-sm md:text-base">
