@@ -1,3 +1,4 @@
+// app/[locale]/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import "../globals.css";
@@ -47,7 +48,6 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  // Await params first
   const { locale } = await params;
   const courseData = await getCourseData(locale);
 
@@ -59,29 +59,25 @@ export async function generateMetadata({
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  // FIX: Destructure locale here, not in the signature
   const { locale } = await params;
 
-  // You are fetching data in the layout, which is fine.
   const courseData = await getCourseData(locale);
 
   return (
-    // FIX: Use the `locale` variable
     <html lang={locale}>
       <body
         className={`${inter.variable} ${notoSansBengali.variable} font-sans antialiased`}
       >
         <main className="relative">
-          {/* FIX: Use the `locale` variable */}
           <Navbar lang={locale} t={courseData} />
           <HeroBanner />
           {children}

@@ -1,12 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import { FaqSection, Section } from "@/lib/types";
-// Define the props interface for Faq component
 interface FaqProps {
   sections: Section[]; // Using the type-safe Section array
 }
 
 const Faq: React.FC<FaqProps> = ({ sections }) => {
-  // Find the object in the 'sections' array where the 'type' property is "faq"
   const faqSection = sections.find(
     (section): section is FaqSection => section.type === "faq"
   );
