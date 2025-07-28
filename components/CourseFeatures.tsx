@@ -1,37 +1,17 @@
+import { Feature, Section } from "@/lib/course/types";
 import Image from "next/image";
 
-// Define the expected structure for a single feature item
-interface FeatureValue {
-  icon: string;
-  id: string;
-  subtitle: string;
-  title: string;
-}
-
-// Define the expected structure for the features section object
-interface FeatureSection {
-  type: "features";
-  name: string;
-  description: string;
-  bg_color: string;
-  order_idx: number;
-  values: FeatureValue[];
-}
-
-// Define the props interface for CourseFeatures component
 interface CourseFeaturesProps {
-  sections: any[]; // Use a more specific type if 'sections' has a consistent structure
+  sections: Section[];
 }
 
 const CourseFeatures: React.FC<CourseFeaturesProps> = (props) => {
   const { sections } = props;
-
-  // Find the object in the 'sections' array where the 'type' property is "features"
   const featuresSection = sections.find(
-    (section): section is FeatureSection => section.type === "features"
+    (section): section is Extract<Section, { type: "features" }> =>
+      section.type === "features"
   );
 
-  // If no features section or values are found, render a fallback message
   if (
     !featuresSection ||
     !featuresSection.values ||
@@ -68,9 +48,8 @@ const CourseFeatures: React.FC<CourseFeaturesProps> = (props) => {
   );
 };
 
-// Separate component for individual feature items to manage their own image loading state
 interface FeatureItemProps {
-  feature: FeatureValue;
+  feature: Feature;
 }
 
 const FeatureItem: React.FC<FeatureItemProps> = ({ feature }) => {

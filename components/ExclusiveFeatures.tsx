@@ -1,4 +1,4 @@
-import { FeatureExplanationsSection, Section } from "@/lib/types";
+import { Section } from "@/lib/course/types";
 import Image from "next/image";
 import React from "react";
 
@@ -10,7 +10,7 @@ interface ExclusiveFeaturesProps {
 const ExclusiveFeatures: React.FC<ExclusiveFeaturesProps> = ({ sections }) => {
   // Find the object in the 'sections' array where the 'type' property is "feature_explanations"
   const featureExplanationsSection = sections.find(
-    (section): section is FeatureExplanationsSection =>
+    (section): section is Extract<Section, { type: "feature_explanations" }> =>
       section.type === "feature_explanations"
   );
 

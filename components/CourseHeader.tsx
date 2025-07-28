@@ -1,10 +1,22 @@
-import CheckList from "./CheckList";
+import { ChecklistItem, CtaText, Media } from "@/lib/course/types";
 import CourseThubmnail from "./CourseThubmnail";
-import CTA from "./CTA";
 import StickyEnroll from "./StickyEnroll";
+interface CourseHeaderProps {
+  title: string;
+  description: string;
+  media: Media[];
+  checklist: ChecklistItem[];
+  cta_text: CtaText;
+}
 
-const CourseHeader = (props) => {
-  const { title, description, media, checklist, cta_text } = props;
+// 3. Apply the props interface to React.FC and correct the destructuring
+const CourseHeader: React.FC<CourseHeaderProps> = ({
+  title,
+  description,
+  media,
+  checklist,
+  cta_text,
+}) => {
   return (
     <div
       style={{

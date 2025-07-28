@@ -5,6 +5,7 @@ import "../globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import HeroBanner from "@/components/HeroBanner";
+import { Language } from "@/lib/course/types";
 
 // --- Font Configuration ---
 const inter = Inter({
@@ -64,21 +65,23 @@ interface RootLayoutProps {
   }>;
 }
 
+function isValidLanguage(locale: string): locale is Language {
+  return locale === "en" || locale === "bn";
+}
+
 export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
   const { locale } = await params;
-
-  const courseData = await getCourseData(locale);
-
+  const validatedLang: Language = isValidLanguage(locale) ? locale : "bn"; // Default to 'bn' or 'en'
   return (
     <html lang={locale}>
       <body
         className={`${inter.variable} ${notoSansBengali.variable} font-sans antialiased`}
       >
         <main className="relative">
-          <Navbar lang={locale} t={courseData} />
+          <Navbar lang={validatedLang} />
           <HeroBanner />
           {children}
           <Footer />

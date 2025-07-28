@@ -1,12 +1,13 @@
+import { Section } from "@/lib/course/types";
 import { ChevronDown } from "lucide-react";
-import { FaqSection, Section } from "@/lib/types";
 interface FaqProps {
   sections: Section[]; // Using the type-safe Section array
 }
 
 const Faq: React.FC<FaqProps> = ({ sections }) => {
   const faqSection = sections.find(
-    (section): section is FaqSection => section.type === "faq"
+    (section): section is Extract<Section, { type: "faq" }> =>
+      section.type === "faq"
   );
 
   // If no FAQ section or values are found, render a fallback message

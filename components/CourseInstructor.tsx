@@ -1,31 +1,11 @@
+import { InstructorSection, Section } from "@/lib/course/types";
 import Image from "next/image";
 
-// Define the expected structure for the instructor value object for better type safety
-interface InstructorValue {
-  description: string;
-  has_instructor_page: boolean;
-  image: string;
-  name: string;
-  short_description: string;
-  slug: string;
-}
-
-interface InstructorSection {
-  type: "instructors";
-  name: string;
-  description: string;
-  bg_color: string;
-  order_idx: number;
-  values: InstructorValue[];
-}
-
 interface CourseInstructorProps {
-  sections: any[];
+  sections: Section[];
 }
 
-const CourseInstructor: React.FC<CourseInstructorProps> = (props) => {
-  const { sections } = props;
-
+const CourseInstructor: React.FC<CourseInstructorProps> = ({ sections }) => {
   // Find the object in the 'sections' array where the 'type' property is "instructors"
   const instructorSection = sections.find(
     (section): section is InstructorSection => section.type === "instructors"

@@ -1,19 +1,19 @@
-"use client"; // This component needs client-side interactivity for carousel and image loading
+"use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react"; // Importing icons from lucide-react
-import { Section, TestimonialsSection } from "@/lib/types"; // Assuming types.ts is in lib/
-import Image from "next/image"; // Import Next.js Image component
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
-// Define the props interface for Testimonials component
+import Image from "next/image";
+import { Section } from "@/lib/course/types";
+
 interface TestimonialsProps {
   sections: Section[]; // Using the type-safe Section array
 }
 
 const Testimonials: React.FC<TestimonialsProps> = ({ sections }) => {
-  // Find the object in the 'sections' array where the 'type' property is "testimonials"
   const testimonialsSection = sections.find(
-    (section): section is TestimonialsSection => section.type === "testimonials"
+    (section): section is Extract<Section, { type: "testimonials" }> =>
+      section.type === "testimonials"
   );
 
   // Ref for the scrollable container

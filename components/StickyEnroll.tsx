@@ -1,13 +1,18 @@
 import React from "react";
 import CheckList from "./CheckList";
-import CTA from "./CTA";
+import CTASection from "./CTASection";
+import { ChecklistItem, CtaText } from "@/lib/course/types";
 
-const StickyEnroll = (props) => {
-  const { checklist, cta_text } = props;
+interface StickyEnrollProps {
+  checklist: ChecklistItem[];
+  cta_text: CtaText;
+}
+
+const StickyEnroll: React.FC<StickyEnrollProps> = ({ checklist, cta_text }) => {
   return (
     <div className="md:sticky md:top-[112px]">
       <div className="md:border p-4">
-        <CTA cta_text={cta_text} />
+        <CTASection cta_text={cta_text} />
         <div className="mt-4">
           <CheckList checklist={checklist} />
         </div>

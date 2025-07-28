@@ -11,12 +11,40 @@ import {
   PhoneIcon,
   SearchIcon,
 } from "./AllIcons";
+import { Language } from "@/lib/course/types";
 
+// --- Type Definitions ---
+
+// Interface for a single navigation link object
+interface NavItem {
+  href: string;
+  label: string;
+  hasDropdown?: boolean;
+}
+
+// Interface for the content of one language in our translations object
+interface TranslationContent {
+  nav: NavItem[];
+  mobileNav: NavItem[];
+  searchPlaceholder: string;
+  login: string;
+}
+
+// Props for the NavLink components (this was already well-defined)
 interface NavLinkProps {
   href: string;
   children: ReactNode;
   hasDropdown?: boolean;
 }
+
+// Props for the main Navbar component
+interface NavbarProps {
+  lang: Language; // Use the specific Language type
+  // 't' prop is removed as it was unused. If you need it, add it back.
+}
+
+// --- Components ---
+
 const NavLink: React.FC<NavLinkProps> = ({
   href,
   children,
@@ -24,14 +52,15 @@ const NavLink: React.FC<NavLinkProps> = ({
 }) => (
   <li className="relative">
     <Link
-      className="flex cursor-pointer items-center justify-center gap-0.5 text-sm font-medium text-[#4B5563] hover:text-green"
+      className="flex cursor-pointer items-center justify-center gap-0.5 text-sm font-medium text-[#4B5563] hover:text-green-500"
       href={href}
     >
       <p className="relative mb-0">{children}</p>
-      {hasDropdown && <ChevronDownIcon />}
+      {hasDropdown && <ChevronDownIcon className="w-4 h-4" />}
     </Link>
   </li>
 );
+
 const MobileNavLink: React.FC<NavLinkProps> = ({
   href,
   children,
@@ -39,25 +68,21 @@ const MobileNavLink: React.FC<NavLinkProps> = ({
 }) => (
   <li className="relative list-none">
     <Link
-      className="flex cursor-pointer items-center gap-2 hover:text-green text-[#4B5563] text-xs font-medium mt-0.5"
+      className="flex cursor-pointer items-center gap-2 hover:text-green-500 text-[#4B5563] text-xs font-medium mt-0.5"
       href={href}
     >
       <div className="flex items-center justify-center relative">
         <p className="relative mb-0">{children}</p>
-        {hasDropdown && <ChevronDownIcon />}
+        {hasDropdown && <ChevronDownIcon className="w-4 h-4" />}
       </div>
     </Link>
   </li>
 );
 
-// --- Navbar Props ---
-interface NavbarProps {
-  lang: string; // Language code, e.g., "en" or "bn";
-  t: string; // The fetched course data
-}
+// --- Typed Data Object ---
 
-// --- Hardcoded translations for UI elements not in the API ---
-const translations = {
+// Using Record<Language, TranslationContent> provides full type-safety
+const translations: Record<Language, TranslationContent> = {
   en: {
     nav: [
       { href: "/academic/", label: "Class 6-12", hasDropdown: true },
@@ -96,62 +121,44 @@ const translations = {
   },
 };
 
-const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
+const Navbar: React.FC<NavbarProps> = ({ lang }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const navItems = translations[lang].nav;
-  const mobileNavItems = translations[lang].mobileNav;
+  // --- FIX: Define variables by selecting from the translations object ---
+  const {
+    nav: navItems,
+    mobileNav: mobileNavItems,
+    searchPlaceholder,
+    login,
+  } = translations[lang];
 
-  // Function to generate the URL for the other language
   const getLanguageToggleUrl = () => {
     const newLang = lang === "en" ? "bn" : "en";
-    if (pathname) {
-      // Replaces the lang part of the URL, e.g., /en/some-page -> /bn/some-page
-      return pathname.replace(`/${lang}`, `/${newLang}`);
-    }
-    return `/${newLang}`; // Fallback
+    return pathname
+      ? pathname.replace(`/${lang}`, `/${newLang}`)
+      : `/${newLang}`;
   };
 
   return (
     <div className="sticky top-0 z-50 border-b bg-white md:h-[65px]">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-3 md:px-7">
-        {/* Left side: Mobile menu toggle and logo */}
-        <div className="flex gap-2">
+        {/* Left side */}
+        <div className="flex items-center gap-2">
           <button
             className="xl:hidden"
             type="button"
-            name="menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <MenuIcon />
             <span className="sr-only">menu</span>
           </button>
-          <div className="md:hidden">
-            <Link className="h-[27px] w-[100px]" href={`/${lang}`}>
-              <img
-                alt="10ms"
-                src="https://cdn.10minuteschool.com/images/svg/10mslogo-svg.svg"
-                fetchPriority="high"
-                width="100"
-                height="27"
-                decoding="async"
-                style={{ color: "transparent" }}
-              />
-            </Link>
-          </div>
-        </div>
-
-        {/* Desktop Logo */}
-        <div className="items-center hidden gap-9 md:flex">
           <Link className="h-[27px] w-[100px]" href={`/${lang}`}>
             <img
               alt="10ms"
               src="https://cdn.10minuteschool.com/images/svg/10mslogo-svg.svg"
-              fetchPriority="high"
               width="100"
               height="27"
-              decoding="async"
               style={{ color: "transparent" }}
             />
           </Link>
@@ -159,19 +166,17 @@ const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
 
         {/* Search Bar */}
         <div className="flex-1 hidden w-full pr-4 md:block">
-          <div className="w-full">
-            <div className="relative flex w-full flex-col items-center bg-white z-50">
-              <div className="shadow-0 rounded-b-[23px] flex w-full items-center gap-2 rounded-t-[23px] border-0 px-[12px] py-2 md:border">
-                <SearchIcon />
-                <input
-                  type="search"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  placeholder={translations[lang].searchPlaceholder}
-                  className="w-full flex-1 placeholder:text-sm placeholder:font-normal placeholder:leading-5 placeholder:text-[#7C818A] focus:outline-none bg-transparent"
-                  name="Search"
-                />
-              </div>
+          <div className="relative flex w-full items-center bg-white z-50">
+            <div className="shadow-0 rounded-full flex w-full items-center gap-2 border px-[12px] py-2">
+              <SearchIcon />
+              <input
+                type="search"
+                autoComplete="off"
+                className="w-full flex-1 placeholder:text-sm focus:outline-none bg-transparent"
+                name="Search"
+                // --- FIX: Use the dynamic placeholder text ---
+                placeholder={searchPlaceholder}
+              />
             </div>
           </div>
         </div>
@@ -179,6 +184,7 @@ const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
         {/* Desktop Navigation */}
         <nav className="hidden mr-4 xl:block">
           <ul className="flex items-center gap-2 lg:gap-4">
+            {/* --- FIX: Use the defined 'navItems' variable --- */}
             {navItems.map((item) => (
               <NavLink
                 key={item.label}
@@ -193,28 +199,23 @@ const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
 
         {/* Right side: Actions */}
         <div className="flex items-center space-x-4 md:space-x-6">
-          <div className="flex items-center gap-3 rounded-md border-1 max-h-96 md:gap-6">
-            <span className="block bg-white md:hidden">
-              <button>
-                <SearchIcon />
-              </button>
-            </span>
-
-            {/* Language Switcher */}
+          <div className="flex items-center gap-3 md:gap-6">
+            <button className="block bg-white md:hidden">
+              <SearchIcon />
+            </button>
             <Link
               href={getLanguageToggleUrl()}
-              className="hidden cursor-pointer items-center gap-1 rounded border px-2 py-[2px] hover:bg-slate-50 md:flex"
+              className="hidden items-center gap-1 rounded border px-2 py-1 hover:bg-slate-50 md:flex"
             >
               <LanguageIcon />
               <span>{lang === "en" ? "BN" : "EN"}</span>
             </Link>
-
             <a
-              className="items-center hidden gap-1 text-green md:flex text-green-400"
+              className="hidden items-center gap-1 text-green-500 md:flex"
               href="tel:16910"
             >
               <PhoneIcon />
-              <span className="inline-block">16910</span>
+              <span>16910</span>
             </a>
             <a
               className="flex items-center gap-1 text-green-500 md:hidden"
@@ -223,27 +224,23 @@ const Navbar: React.FC<NavbarProps> = ({ lang, t }) => {
               <MobilePhoneIcon />
             </a>
           </div>
-          <div className="block">
-            <a
-              className="flex items-center px-3 py-1 text-white rounded-md bg-green-500 md:px-6"
-              href="/auth/login/?returnUrl=%2Fproduct%2Fielts-course%2F"
-            >
-              <span
-                id="login-button"
-                className="leading-[18px] whitespace-nowrap text-[12px] font-semibold md:text-[16px] md:font-medium"
-              >
-                {/* Use API data if available, otherwise use fallback from translations object */}
-                {t?.cta_text?.name || translations[lang].login}
-              </span>
-            </a>
-          </div>
+          <a
+            className="flex items-center px-3 py-1 text-white rounded-md bg-green-500 md:px-6"
+            href={`/auth/login/?returnUrl=${pathname}`}
+          >
+            <span className="whitespace-nowrap text-xs font-semibold md:text-base md:font-medium">
+              {/* --- FIX: Use the defined 'login' variable --- */}
+              {login}
+            </span>
+          </a>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="block md:hidden">
-          <div className="flex items-center justify-between p-4 max-w-[350px] mx-auto">
+        <div className="block xl:hidden border-t">
+          <div className="flex items-center justify-between p-4 max-w-[450px] mx-auto">
+            {/* --- FIX: Use the defined 'mobileNavItems' variable --- */}
             {mobileNavItems.map((item) => (
               <MobileNavLink
                 key={item.label}

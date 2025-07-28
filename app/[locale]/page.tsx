@@ -10,9 +10,10 @@ import Faq from "@/components/Faq";
 import KeyPoints from "@/components/KeyPoints";
 import StickyEnroll from "@/components/StickyEnroll";
 import Testimonials from "@/components/Testimonials";
+import { CourseData } from "@/lib/course/types";
 
 // The getCourseData function is well-written and can remain the same.
-async function getCourseData(locale: string) {
+async function getCourseData(locale: string): Promise<CourseData | null> {
   if (locale !== "en" && locale !== "bn") return null;
   try {
     const res = await fetch(
@@ -52,12 +53,6 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const { title, description, media, checklist, cta_text, sections } =
     courseData;
-
-  const thumbnail = media?.find(
-    (m: any) => m.name === "thumbnail"
-  )?.resource_value;
-
-  const featuresTitle = locale === "bn" ? "কোর্স ফিচার" : "Course Features";
 
   return (
     <div>

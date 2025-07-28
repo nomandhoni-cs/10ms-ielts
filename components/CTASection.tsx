@@ -1,8 +1,10 @@
 import React from "react";
 import { Button } from "./ui/button";
-
-const CTA = (props) => {
-  const { cta_text } = props;
+import { CtaText } from "@/lib/course/types";
+interface CTAProps {
+  cta_text: CtaText; // Using the type-safe Section array
+}
+const CTASection: React.FC<CTAProps> = ({ cta_text }) => {
   return (
     <div className="flex flex-col">
       <div className="flex items-center space-x-4 font-inter">
@@ -26,10 +28,10 @@ const CTA = (props) => {
         </div>
       </div>
       <Button className="mt-4 bg-green-600 hover:bg-green-900 text-white py-2 rounded text-lg text-center cursor-pointer">
-        {cta_text.name}
+        {cta_text.value}
       </Button>
     </div>
   );
 };
 
-export default CTA;
+export default CTASection;
