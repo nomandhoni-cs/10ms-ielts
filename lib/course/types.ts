@@ -148,3 +148,25 @@ export interface ApiResponse {
 }
 
 export type Language = "en" | "bn";
+
+export interface Taxonomy {
+  vertical: string;
+  segment: string;
+}
+
+export interface SearchResultItem {
+  id: string;
+  context: "phrase" | "product";
+  text: string;
+  sub_text: string;
+  image: string;
+  slug: string;
+  taxonomy: Taxonomy;
+  tags: any[];
+}
+
+export interface SearchApiResponse {
+  data: {
+    items: SearchResultItem[];
+  };
+}

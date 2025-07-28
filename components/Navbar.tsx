@@ -3,7 +3,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ChevronDownIcon, X } from "lucide-react";
 import {
   LanguageIcon,
   MenuIcon,
@@ -13,6 +12,8 @@ import {
 } from "./AllIcons";
 import { Language } from "@/lib/course/types";
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
+import SearchBox from "./SearchBox";
 
 // --- Type Definitions ---
 interface NavItem {
@@ -35,34 +36,24 @@ interface NavbarProps {
   lang: Language;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({
-  href,
-  children,
-  hasDropdown = false,
-}) => (
+const NavLink: React.FC<NavLinkProps> = ({ href, children }) => (
   <li className="relative">
     <Link
       className="flex cursor-pointer items-center justify-center gap-0.5 text-sm font-medium text-[#4B5563] hover:text-green-500"
       href={href}
     >
       <p className="relative mb-0">{children}</p>
-      {hasDropdown && <ChevronDownIcon className="w-4 h-4" />}
     </Link>
   </li>
 );
 
-const SideNavLink: React.FC<NavLinkProps> = ({
-  href,
-  children,
-  hasDropdown = false,
-}) => (
+const SideNavLink: React.FC<NavLinkProps> = ({ href, children }) => (
   <li className="list-none">
     <Link
       className="flex items-center justify-between w-full p-3 text-base font-medium text-gray-700 rounded-lg hover:bg-gray-100"
       href={href}
     >
       <span>{children}</span>
-      {hasDropdown && <ChevronDownIcon className="w-5 h-5" />}
     </Link>
   </li>
 );
@@ -134,7 +125,6 @@ const Navbar: React.FC<NavbarProps> = ({ lang }) => {
     <>
       <div className="sticky top-0 z-30 border-b bg-white md:h-[65px]">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-3 md:px-7">
-          {/* Left side: Hamburger menu button and logo */}
           <div className="flex items-center gap-2">
             <button
               className="xl:hidden"
@@ -154,18 +144,7 @@ const Navbar: React.FC<NavbarProps> = ({ lang }) => {
             </Link>
           </div>
           <div className="flex-1 hidden w-full pr-4 md:block">
-            <div className="relative flex w-full items-center bg-white z-50">
-              <div className="shadow-0 rounded-full flex w-full items-center gap-2 border px-[12px] py-2">
-                <SearchIcon />
-                <input
-                  type="search"
-                  autoComplete="off"
-                  className="w-full flex-1 placeholder:text-sm focus:outline-none bg-transparent"
-                  name="Search"
-                  placeholder={searchPlaceholder}
-                />
-              </div>
-            </div>
+            <SearchBox placeholder={searchPlaceholder} />
           </div>
 
           {/* Desktop Navigation */}
