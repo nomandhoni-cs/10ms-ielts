@@ -137,11 +137,31 @@ export interface CourseData {
   checklist: ChecklistItem[];
   cta_text: CtaText;
   sections: Section[];
+  seo: SeoData;
   // Include other top-level fields from `data` if you need them
   slug: string;
   id: number;
 }
+// --- SEO Types ---
+export interface DefaultMetaItem {
+  content: string;
+  type: "property" | "name";
+  value: string;
+}
 
+export interface SchemaItem {
+  meta_name: "ld-json";
+  meta_value: string;
+  type: "ld-json";
+}
+
+export interface SeoData {
+  defaultMeta: DefaultMetaItem[];
+  description: string;
+  keywords: string[];
+  schema: SchemaItem[];
+  title: string;
+}
 // --- API Response Wrapper ---
 export interface ApiResponse {
   data: CourseData;
