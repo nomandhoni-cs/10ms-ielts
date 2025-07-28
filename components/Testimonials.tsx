@@ -120,8 +120,6 @@ const Testimonials: React.FC<TestimonialsProps> = ({ sections }) => {
                 <div
                   key={testimonial.id}
                   className="flex-shrink-0 snap-center mr-4"
-                  // Set a fixed height for all testimonial cards for uniform size
-                  // Using a min-h and h-full on inner content to fill the space
                 >
                   <div className="relative mt-5 w-[260px] rounded-lg border border-gray-200 p-6 flex flex-col justify-between bg-white md:w-[372px] h-[300px] md:h-[350px]">
                     {" "}
@@ -165,7 +163,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ sections }) => {
                       </div>
                     ) : (
                       // Show testimonial text if no video URL
-                      <div className="flex-1 overflow-y-auto text-gray-700 text-sm md:text-base leading-relaxed mb-4">
+                      <div className="flex-1 text-gray-700 text-sm md:text-base leading-relaxed mb-4 text-clip overflow-y-hidden">
                         {testimonial.testimonial || testimonial.description}
                       </div>
                     )}
