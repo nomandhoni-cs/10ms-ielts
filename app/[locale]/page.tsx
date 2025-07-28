@@ -31,9 +31,9 @@ async function getCourseData(locale: string) {
 
 // Define the props type for clarity
 interface HomePageProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export default async function HomePage({ params }: HomePageProps) {

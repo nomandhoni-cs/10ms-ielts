@@ -34,7 +34,7 @@ const CourseHeader = (props) => {
               </span>
             </button>
           </div>
-          <p
+          <div
             className="text-gray-400"
             dangerouslySetInnerHTML={{ __html: description }}
           />
