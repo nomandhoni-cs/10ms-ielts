@@ -12,7 +12,6 @@ import StickyEnroll from "@/components/StickyEnroll";
 import Testimonials from "@/components/Testimonials";
 import { CourseData } from "@/lib/course/types";
 
-// The getCourseData function is well-written and can remain the same.
 async function getCourseData(locale: string): Promise<CourseData | null> {
   if (locale !== "en" && locale !== "bn") return null;
   try {
@@ -30,7 +29,6 @@ async function getCourseData(locale: string): Promise<CourseData | null> {
   }
 }
 
-// Define the props type for clarity
 interface HomePageProps {
   params: Promise<{
     locale: string;
@@ -63,7 +61,7 @@ export default async function HomePage({ params }: HomePageProps) {
         checklist={checklist}
         cta_text={cta_text}
       />
-      <section className="max-w-6xl mx-auto py-4 md:flex items-center justify-between">
+      <section className="max-w-6xl mx-auto py-4 flex flex-col-reverse md:flex-row items-center justify-between">
         <div className="w-full md:max-w-[calc(100%_-_348px)] lg:max-w-[calc(100%_-_448px)]">
           <CourseInstructor sections={sections} />
           <CourseFeatures sections={sections} />
